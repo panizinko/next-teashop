@@ -18,11 +18,10 @@ export default async function HomePage() {
 	const supabase = await createClient();
 	const { data: offers } = await supabase.from("offers").select();
 
-	const featuredOffers = offers?.filter((offer) => offer.is_featured).slice(0, 3);
+	const featuredOffers = offers?.slice(0, 3);
 
 	return (
 		<main className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-800 text-white">
-			{/* Intro Section with Search */}
 			<section
 				className="bg-cover bg-center py-16 text-center sm:py-24"
 				// style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
@@ -38,7 +37,6 @@ export default async function HomePage() {
 				</div>
 			</section>
 
-			{/* Featured Offers Section */}
 			<section className="bg-slate-50 py-12 sm:py-16">
 				<div className="container mx-auto px-4">
 					<h2 className="mb-10 text-center text-3xl font-bold text-slate-800 sm:mb-12 sm:text-4xl">
@@ -49,7 +47,7 @@ export default async function HomePage() {
 							data-testid="rent-offer-list"
 							className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3"
 						>
-							{featuredOffers.map((offer) => (
+							{featuredOffers?.map((offer) => (
 								<Card
 									key={offer.id}
 									className="flex flex-col overflow-hidden bg-white text-slate-800 shadow-lg transition-shadow duration-300 hover:shadow-2xl"
@@ -62,7 +60,7 @@ export default async function HomePage() {
 													src={offer.images[0]}
 													alt={`Zdjęcie oferty: ${offer.name}`}
 													className="object-cover"
-													priority={featuredOffers.indexOf(offer) < 2} // Prioritize first 2 featured
+													loading="lazy"
 												/>
 											) : (
 												<div className="flex h-full items-center justify-center bg-gray-100">
